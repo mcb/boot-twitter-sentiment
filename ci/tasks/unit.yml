@@ -10,4 +10,4 @@ inputs:
   - name: bts-repo
 
 run:
-  path: boot-twitter-sentiment/ci/tasks/unit.sh
+  path: bts-repo/ci/tasks/unit.sh
