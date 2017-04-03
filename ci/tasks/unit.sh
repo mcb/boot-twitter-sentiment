@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 set -e
 
-cd music-repo
+cd bts-repo
 mvn test
