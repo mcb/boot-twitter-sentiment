@@ -1,0 +1,63 @@
+resources:
+
+- name: bts-repo
+  type: git
+  source:
+    uri: git@github.com:griga23/boot-twitter-sentiment.git
+    branch: master
+    private_key: {{music_private_key}}
+
+- name: bts-release
+  type: s3
+  source:
+    bucket: griga-boot-twitter-sentiment
+    regexp: (.*).jar
+    access_key_id: {{s3-access-key-id}}
+    secret_access_key: {{s3-secret-access-key}}
+
+- name: bts-cf
+  type: cf
+  source:
+    api: {{cf-api}}
+    username: {{cf-username}}
+    password: {{cf-password}}
+    organization: {{cf-organization}}
+    space: {{cf-space}}
+    skip_cert_check: true
+
+- name: bts-cf-test
+  type: cf
+  source:
+    api: {{cf-api}}
+    username: {{cf-username}}
+    password: {{cf-password}}
+    organization: {{cf-organization}}
+    space: {{cf-space-test}}
+    skip_cert_check: true
+
+- name: bts-cf-prod
+  type: cf
+  source:
+    api: {{cf-api}}
+    username: {{cf-username}}
+    password: {{cf-password}}
+    organization: {{cf-organization}}
+    space: {{cf-space-prod}}
+    skip_cert_check: true
+
+- name: version
+  type: semver
+  source:
+    bucket: griga-boot-twitter-sentiment
+    key: current-version
+    access_key_id: {{s3-access-key-id}}
+    secret_access_key: {{s3-secret-access-key}}
+    initial_version: 1.0.0
+
+jobs:
+- name: bts-test
+  plan:
+  - get: bts-repo
+    trigger: true
+  - task: unit
+    file: bts-repo/ci/tasks/unit.yml
