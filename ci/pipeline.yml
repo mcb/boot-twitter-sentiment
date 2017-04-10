@@ -7,11 +7,19 @@ resources:
     branch: master
     private_key: {{bts_private_key}}
 
-- name: bts-release
+- name: visualizer-release
   type: s3
   source:
     bucket: griga-boot-twitter-sentiment
-    regexp: (.*).jar
+    regexp: boot-twitter-visualizer-(.*).jar
+    access_key_id: {{s3-access-key-id}}
+    secret_access_key: {{s3-secret-access-key}}
+
+- name: feeder-release
+  type: s3
+  source:
+    bucket: griga-boot-twitter-sentiment
+    regexp: boot-twitter-feeder-(.*).jar
     access_key_id: {{s3-access-key-id}}
     secret_access_key: {{s3-secret-access-key}}
 
@@ -52,8 +60,10 @@ jobs:
   - task: build-artifact
     file: bts-repo/ci/tasks/build-artifact.yml
     timeout: 5m
-  - put: bts-release
-    params: {file: binaries/*.jar }
+  - put: feeder-release
+    params: {file: binaries/boot-twitter-feeder*.jar }
+  - put: visualizer-release
+    params: {file: binaries/boot-twitter-visualizer*.jar }    
   - put: bts-repo
     params:
       repository: bts-repo
