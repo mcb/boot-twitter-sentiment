@@ -5,7 +5,7 @@ resources:
   source:
     uri: git@github.com:griga23/boot-twitter-sentiment.git
     branch: master
-    private_key: {{music_private_key}}
+    private_key: {{bts_private_key}}
 
 - name: bts-release
   type: s3
@@ -25,26 +25,6 @@ resources:
     space: {{cf-space}}
     skip_cert_check: true
 
-- name: bts-cf-test
-  type: cf
-  source:
-    api: {{cf-api}}
-    username: {{cf-username}}
-    password: {{cf-password}}
-    organization: {{cf-organization}}
-    space: {{cf-space-test}}
-    skip_cert_check: true
-
-- name: bts-cf-prod
-  type: cf
-  source:
-    api: {{cf-api}}
-    username: {{cf-username}}
-    password: {{cf-password}}
-    organization: {{cf-organization}}
-    space: {{cf-space-prod}}
-    skip_cert_check: true
-
 - name: version
   type: semver
   source:
@@ -55,9 +35,43 @@ resources:
     initial_version: 1.0.0
 
 jobs:
-- name: bts-test
+- name: unit-test
   plan:
   - get: bts-repo
     trigger: true
   - task: unit
     file: bts-repo/ci/tasks/unit.yml
+
+- name: build-binary
+  plan:
+  - get: bts-repo
+    passed: [unit-test]
+    trigger: true
+  - get: version
+    params: {bump: patch}
+  - task: build-artifact
+    file: bts-repo/ci/tasks/build-artifact.yml
+    timeout: 5m
+  - put: bts-release
+    params: {file: binaries/*.jar }
+  - put: bts-repo
+    params:
+      repository: bts-repo
+      tag: version/number
+  - put: version
+    params: {file: version/number}
+
+- name: acceptance-tests
+  plan:
+  - get: bts-release
+    passed: [build-binary]
+    trigger: true
+  - get: bts-repo
+    passed: [build-binary]
+    trigger: true
+  - put: bts-cf
+    params:
+      manifest: bts-repo/acc-manifest.yml
+      path: bts-release/*.jar
+  - task: cats
+    file: bts-repo/ci/tasks/cats.yml
