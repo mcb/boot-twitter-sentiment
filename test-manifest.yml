@@ -1,0 +1,24 @@
+---
+instances: 1
+applications:
+- name: visualizer
+  host: js-test-visualizer
+  path: ./boot-twitter-visualizer/target/boot-twitter-visualizer-0.0.1-SNAPSHOT.jar
+  memory: 512M
+  services:
+  - rabbit
+  - db
+- name: feeder
+  host: js-test-feeder
+  no-route: true
+  path: ./boot-twitter-feeder/target/boot-twitter-feeder-0.0.1-SNAPSHOT.jar
+  memory: 1G
+  services:
+  - rabbit
+  - db
+env:
+  twitter_query: '#siemens'
+  twitter_oauth_consumerKey: nYHDGuBYzTjjtHdBVgebrRkAW
+  twitter_oauth_consumerSecret: vebTFa7mqMz77WjnyqUenbbEJAc7L6i9IUOvVFSGjRfHp6riLH
+  twitter_oauth_accessToken: 50346380-SwUZ8PsuK1SJaghSxSsUgA3sTxLcw4DdSWRBTBzs0
+  twitter_oauth_accessTokenSecret: Dh6blkMBt1c4dgz0KRQra3SMoKtgpP9YnWPkaD0TPBmkz

@@ -54,3 +54,7 @@ local.properties
 .recommenders/
 
 **/target/**
+
+ci/credentials_pez35.yml
+
+ci/id_rsa

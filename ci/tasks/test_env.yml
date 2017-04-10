@@ -1,0 +1,16 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: maven
+
+inputs:
+  - name: bts-repo
+
+run:
+  path: bts-repo/ci/tasks/test_env.sh
+
+params:
+  TEST_URL: https://js-test-visualizer.cfapps.haas-35.pez.pivotal.io
