@@ -81,31 +81,39 @@ jobs:
   - put: version
     params: {file: version/number}
 
-- name: acceptance-tests
+- name: acceptance-tests-feeder
   plan:
   - get: feeder-release
     passed: [build-binary]
     trigger: true
-  - get: visualizer-release
-    passed: [build-binary]
   - get: bts-repo
-    passed: [build-binary]
-    trigger: true
   - put: cf-test
     params:
-      manifest: bts-repo/test-manifest.yml
-  - task: cats
+      manifest: bts-repo/feeder-manifest.yml
+      path: feeder-release/boot-twitter-feeder-*.jar
+  - task: acc_test
+    file: bts-repo/ci/tasks/test_env.yml
+
+- name: acceptance-tests-visualizer
+  plan:
+  - get: visualizer-release
+    passed: [build-binary]
+    trigger: true
+  - get: bts-repo
+  - put: cf-test
+    params:
+      manifest: bts-repo/visualizer-manifest.yml
+      path: visualizer-release/boot-twitter-visualizer-*.jar
+  - task: acc_test
     file: bts-repo/ci/tasks/test_env.yml
 
 - name: manual-deploy-to-prod
   plan:
   - get: feeder-release
-    passed: [acceptance-tests]
-    trigger: true
+    passed: [acceptance-tests-feeder]
   - get: visualizer-release
-    passed: [acceptance-tests]
+    passed: [acceptance-tests-visualizer]
   - get: bts-repo
-    passed: [acceptance-tests]
   - put: cf-prod
     params:
       manifest: music-repo/prod-manifest.yml
