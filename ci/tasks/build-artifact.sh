@@ -8,5 +8,6 @@ mvn package
 
 cd ..
 pwd
-cp bts-repo/boot-twitter-feeder/target/* binaries/
-cp bts-repo/boot-twitter-visualizer/target/* binaries/
+cp bts-repo/boot-twitter-feeder/target/*.jar binaries/
+cp bts-repo/boot-twitter-visualizer/target/*.jar binaries/
+ls -l binaries/
