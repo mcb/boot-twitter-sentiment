@@ -7,5 +7,8 @@ status_code=`eval $get_code`
 
 if [ "$status_code" != "200" ]
 then
-  echo "Expect status code from $TEST_URL as 200, but got $status_code"
+  echo "Application not reached. Expected status code from $TEST_URL as 200, but got $status_code"
+  exit 1
 fi
+
+echo "Application reached successfully..."

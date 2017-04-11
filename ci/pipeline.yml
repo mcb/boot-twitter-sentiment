@@ -43,15 +43,6 @@ resources:
     space: {{cf-space-prod}}
     skip_cert_check: true
 
-- name: version
-  type: semver
-  source:
-    bucket: griga-boot-twitter-sentiment
-    key: current-version
-    access_key_id: {{s3-access-key-id}}
-    secret_access_key: {{s3-secret-access-key}}
-    initial_version: 1.0.0
-
 jobs:
 - name: unit-test
   plan:
@@ -65,8 +56,6 @@ jobs:
   - get: bts-repo
     passed: [unit-test]
     trigger: true
-  - get: version
-    params: {bump: patch}
   - task: build-artifact
     file: bts-repo/ci/tasks/build-artifact.yml
     timeout: 5m
@@ -74,12 +63,6 @@ jobs:
     params: {file: binaries/boot-twitter-feeder*.jar }
   - put: visualizer-release
     params: {file: binaries/boot-twitter-visualizer*.jar }
-  - put: bts-repo
-    params:
-      repository: bts-repo
-      tag: version/number
-  - put: version
-    params: {file: version/number}
 
 - name: acceptance-tests-feeder
   plan:
@@ -93,6 +76,8 @@ jobs:
       path: feeder-release/boot-twitter-feeder-*.jar
   - task: acc_test
     file: bts-repo/ci/tasks/test_env.yml
+    params:
+      TEST_URL: {{TEST_URL}}
 
 - name: acceptance-tests-visualizer
   plan:
@@ -106,6 +91,8 @@ jobs:
       path: visualizer-release/boot-twitter-visualizer-*.jar
   - task: acc_test
     file: bts-repo/ci/tasks/test_env.yml
+    params:
+      TEST_URL: {{TEST_URL}}
 
 - name: manual-deploy-to-prod-feeder
   plan:

@@ -13,4 +13,4 @@ run:
   path: bts-repo/ci/tasks/test_env.sh
 
 params:
-  TEST_URL: https://js-test-visualizer.cfapps.haas-35.pez.pivotal.io
+  TEST_URL: {{TEST_URL}}
