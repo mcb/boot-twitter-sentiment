@@ -8,7 +8,6 @@ image_resource:
 
 inputs:
   - name: bts-repo
-  - name: version
 outputs:
   - name: binaries
 
