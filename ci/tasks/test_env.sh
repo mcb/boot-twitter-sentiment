@@ -11,4 +11,4 @@ then
   exit 1
 fi
 
-echo "Application reached successfully..."
+echo "Application reached successfully at $TEST_URL !!!"
