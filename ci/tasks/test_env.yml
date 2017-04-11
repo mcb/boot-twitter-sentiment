@@ -11,6 +11,3 @@ inputs:
 
 run:
   path: bts-repo/ci/tasks/test_env.sh
-
-params:
-  TEST_URL: {{TEST_URL}}
