@@ -107,7 +107,7 @@ jobs:
   - task: acc_test
     file: bts-repo/ci/tasks/test_env.yml
 
-- name: manual-deploy-to-prod
+- name: manual-deploy-to-prod-feeder
   plan:
   - get: feeder-release
     passed: [acceptance-tests-feeder]
@@ -116,4 +116,17 @@ jobs:
   - get: bts-repo
   - put: cf-prod
     params:
-      manifest: music-repo/prod-manifest.yml
+      manifest: bts-repo/feeder-manifest-prod.yml
+      path: feeder-release/boot-twitter-feeder-*.jar
+
+- name: manual-deploy-to-prod-visualizer
+  plan:
+  - get: feeder-release
+    passed: [acceptance-tests-feeder]
+  - get: visualizer-release
+    passed: [acceptance-tests-visualizer]
+  - get: bts-repo
+  - put: cf-prod
+    params:
+      manifest: bts-repo/visualizer-manifest-prod.yml
+      path: visualizer-release/boot-twitter-visualizer-*.jar
