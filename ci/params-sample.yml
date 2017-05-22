@@ -8,5 +8,8 @@ cf-space-prod: CHANGEME
 
 s3-access-key-id: CHANGEME
 s3-secret-access-key: CHANGEME
+s3-bucket: boot-twitter-sentiment
 
-# TEST_URL: http://js-test-visualizer.cfapps.haas-35.pez.pivotal.io
+github-repo: git@github.com:mcb/boot-twitter-sentiment.git
+
+TEST_URL: http://js-test-visualizer.cfapps.haas-35.pez.pivotal.io

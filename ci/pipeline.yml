@@ -3,14 +3,14 @@ resources:
 - name: bts-repo
   type: git
   source:
-    uri: git@github.com:griga23/boot-twitter-sentiment.git
+    uri: {{github-repo}}
     branch: master
     private_key: {{bts_private_key}}
 
 - name: visualizer-release
   type: s3
   source:
-    bucket: griga-boot-twitter-sentiment
+    bucket: {{s3-bucket}}
     regexp: boot-twitter-visualizer-(.*).jar
     access_key_id: {{s3-access-key-id}}
     secret_access_key: {{s3-secret-access-key}}
@@ -18,7 +18,7 @@ resources:
 - name: feeder-release
   type: s3
   source:
-    bucket: griga-boot-twitter-sentiment
+    bucket: {{s3-bucket}}
     regexp: boot-twitter-feeder-(.*).jar
     access_key_id: {{s3-access-key-id}}
     secret_access_key: {{s3-secret-access-key}}
