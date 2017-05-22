@@ -1,0 +1,12 @@
+cf-api: CHANGEME
+cf-username: CHANGEME
+cf-password: CHANGEME
+cf-organization: CHANGEME
+cf-space: CHANGEME
+cf-space-test: CHANGEME
+cf-space-prod: CHANGEME
+
+s3-access-key-id: CHANGEME
+s3-secret-access-key: CHANGEME
+
+# TEST_URL: http://js-test-visualizer.cfapps.haas-35.pez.pivotal.io

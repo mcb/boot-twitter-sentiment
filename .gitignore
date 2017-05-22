@@ -58,3 +58,4 @@ local.properties
 ci/credentials_pez35.yml
 
 ci/id_rsa
+ci/params.yml
